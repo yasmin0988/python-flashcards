@@ -1,5 +1,6 @@
 import csv
 import os
+import traceback
 
 print(f"1. Add flashcard\n2. Study flashcard\n3. View all flashcards\n4. Exit")
 
@@ -31,29 +32,6 @@ while True:
                         "Answer" : answer
                     })
 
-            case 2:
-                file_exists = os.path.exists('flashcards.csv')
-                if not file_exists:
-                        print("No cards to study")
-                        continue
-                
-                with open('flashcards.csv', 'r', newline='') as file:
-                    reader = csv.DictReader(file)
-
-                    try:
-                        for row in reader:
-                            print(row['Question'])
-                            answer = input("What's the answer? ") 
-
-                            if answer == row['Answer']:
-                                print("Correct")
-
-                            else:
-                                print("Incorrect")
-                        
-                    except Exception as e:
-                        print(e, type(e))
-
             case 3:
                 file_exists = os.path.exists('flashcards.csv')
                 if not file_exists:
@@ -68,6 +46,7 @@ while True:
                     
                     except Exception as e:
                         print(e, type(e))
+                        traceback.print_exc()
 
             case 4:
                 break
