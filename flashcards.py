@@ -32,6 +32,42 @@ while True:
                         "Answer" : answer
                     })
 
+            case 2:
+                file_exists = os.path.exists('flashcards.csv')
+                if not file_exists:
+                        print("No cards to study")
+                        continue
+                
+                with open('flashcards.csv', 'r', newline='') as file:
+                    reader = csv.DictReader(file)
+
+                    try:
+                        score = 0
+                        total = 0
+                        report = {}
+                        for row in reader:
+                            print(row['Question'])
+                            answer = input("What's the answer? ") 
+
+                            if answer.strip().lower() == row['Answer'].strip().lower():
+                                print("Correct")
+                                score += 1
+                                total += 1
+                                report[f"Question {total}"] = "Correct"
+
+                            else:
+                                print("Incorrect")
+                                total += 1
+                                report[f"Question {total}"] = "Incorrect"
+
+                        for i in range(len(report)):
+                            print(f"\n\n{report[f"Question {i+1}"]}")
+                        print(f"\nScore: {score}/{total}")
+                        
+                    except Exception as e:
+                        print(e, type(e))
+                        traceback.print_exc()
+
             case 3:
                 file_exists = os.path.exists('flashcards.csv')
                 if not file_exists:
