@@ -1,6 +1,7 @@
 import csv
 import os
 import traceback
+from random import shuffle
 
 print(f"1. Add flashcard\n2. Study flashcard\n3. View all flashcards\n4. Exit")
 
@@ -45,11 +46,15 @@ while True:
                         score = 0
                         total = 0
                         report = {}
-                        for row in reader:
-                            print(row['Question'])
+                        cards = list(reader)
+                        shuffle(cards)
+                        item = 0
+
+                        for item in cards:
+                            print(item["Question"])
                             answer = input("What's the answer? ") 
 
-                            if answer.strip().lower() == row['Answer'].strip().lower():
+                            if answer.strip().lower() == item['Answer'].strip().lower():
                                 print("Correct")
                                 score += 1
                                 total += 1
@@ -61,7 +66,7 @@ while True:
                                 report[f"Question {total}"] = "Incorrect"
 
                         for i in range(len(report)):
-                            print(f"\n\n{report[f"Question {i+1}"]}")
+                            print(f"\n\nQuestion {i+1}: {report[f"Question {i+1}"]}")
                         print(f"\nScore: {score}/{total}")
                         
                     except Exception as e:
