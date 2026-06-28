@@ -3,7 +3,7 @@ import os
 import traceback
 from random import shuffle
 
-print(f"1. Add flashcard\n2. Study flashcard\n3. View all flashcards\n4. Exit")
+print(f"1. Add flashcard\n2. Study flashcards\n3. View all flashcards\n4. Delete a flashcard\n5. Exit")
 
 flashcards = {}
 
@@ -88,8 +88,39 @@ while True:
                     except Exception as e:
                         print(e, type(e))
                         traceback.print_exc()
-
             case 4:
+                file_exists = os.path.exists('flashcards.csv')
+                if not file_exists:
+                    print("No cards available")
+                    continue
+                with open('flashcards.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+
+                    try:
+                        cards = list(reader)
+                        i = 0
+                        for card in cards:
+                            print(f"{i+1}. {card}")
+                            i +=1
+
+                        choice = int(input("Which card to delete?"))
+                        cards.remove(cards[choice-1])
+                        
+                        with open('flashcards.csv', 'w') as file:
+                            fieldnames = ["Question", "Answer"]
+                            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                            writer.writeheader()
+                            for card in cards:
+                                writer.writerow(card)
+
+                        print("Done")
+
+                    except Exception as e:
+                        print(e, type(e))
+                        traceback.print_exc()
+
+            case 5:
                 break
     
     except ValueError:
